@@ -5,13 +5,17 @@
 
 #Prototipo em Python 
 #Criado em 19-09-2024
-# Revisão 1_24_09_2024
+# Revisão 1_25_09_2024
 
 import serial
 
-import os, subprocess, serial, time
 import serial.tools.list_ports
 
+import os, io, subprocess, time, codecs, binascii 
+
+from binascii import unhexlify
+
+from io import BytesIO
 
 #----------------------------------------------------------------Teste inicial da porta
 def prototype_4():
@@ -352,8 +356,12 @@ def test_serial():
 #1ª opção:
 #converter para string e gravar
 #-->use para treinar o programa
-def read_txt(path_txt):
+def read_txt(path_txt):#arquivo de texto
     with open(path_txt, "r") as arquivo:
+        print(arquivo.read())
+
+def read_txt_2(path_txt):#arquivo de bytes
+    with open(path_txt, "rb") as arquivo:
         print(arquivo.read())
 
 def create_txt():
@@ -385,7 +393,68 @@ def create_txt():
     with open(path_txt, "w") as arquivo:
 	    arquivo.write(operations_96)
     
-def write_read_txt():
+#---------------------------------------------------------------------------Escrita hex to byte
+#teste 1
+def hex_to_byte():
+    
+    #Conversão para byte
+    operations_96='5c39d473b1ec045559e3011c94e06c103f69a0ffd3b8a43aa47354aaa1302f4e01549c01b1465def34fbd9743f3fd07a161ea558e187888d8b80ffd1e00ed4a9cfcdc3ed47f7a37b535207027cbb18ba8a9b63c72ad8179317baf4dd211041ed01971e5ce92840df0a6e16f891a1dd026ca8eb431db693dc7b840bae8a7b0c037b5cbdc29e9b74a14d2a55b1e91b06b9'
+    print(bytes.fromhex(operations_96))
+    s=codecs.decode(operations_96,'hex_codec')
+    print()
+    print(s)
+    t=unhexlify(operations_96)
+    print()
+    print(t)
+    u=binascii.a2b_hex(operations_96)
+    print()
+    print(u)
+
+#teste 2(com escrita em arquivo)
+def hex_to_byte_2():
+    
+    #Conversão para byte
+    operations_96='5c39d473b1ec045559e3011c94e06c103f69a0ffd3b8a43aa47354aaa1302f4e01549c01b1465def34fbd9743f3fd07a161ea558e187888d8b80ffd1e00ed4a9cfcdc3ed47f7a37b535207027cbb18ba8a9b63c72ad8179317baf4dd211041ed01971e5ce92840df0a6e16f891a1dd026ca8eb431db693dc7b840bae8a7b0c037b5cbdc29e9b74a14d2a55b1e91b06b9'
+    
+    r=bytes.fromhex(operations_96)
+    print()
+    print(r)
+    
+    s=codecs.decode(operations_96,'hex_codec')
+    print()
+    print(s)
+
+    write_byte = BytesIO(s)
+    print()
+    print(write_byte)
+    
+
+    t=unhexlify(operations_96)
+    print()
+    print(t)
+
+    u=binascii.a2b_hex(operations_96)
+    print()
+    print(u)
+
+    path_txt=get_doc_folder()+"\\ac_2_ep_04\\text.hex"
+    #path_txt=get_doc_folder()+"\\ac_2_ep_04\\text.bin"
+
+    if not os.path.exists(get_doc_folder()+"\\ac_2_ep_04"):
+        os.makedirs(get_doc_folder()+"\\ac_2_ep_04")
+
+    print("No caminho: ",path_txt)
+       
+    with open(path_txt, "wb") as arquivo:
+    #with open(path_txt, "w") as arquivo:
+	    
+        arquivo.write(write_byte.getbuffer())
+
+        
+    #reversão de byte para string hexadecimal precisará ser feita no c++(dentro do programa do arduino)
+
+#---------------------------------------------------------------------------
+def write_read_txt():#arquivo de texto
     try:
         print("Criando o arquivo")
         create_txt()
@@ -395,6 +464,35 @@ def write_read_txt():
         print("Erro was found")
         print(errno)
 
+def write_read_txt_2():#arquivo de bytes
+    try:
+        print("Criando o arquivo")
+        hex_to_byte_2()
+        print("Lendo o arquivo")
+        read_txt_2(get_doc_folder()+"\\ac_2_ep_04\\text.hex")
+    except Exception as errno:
+        print("Erro was found")
+        print(errno)
+
+#reversão de byte para string hexadecimal precisará ser feita no c++(teste dos bytes e analise de viabilidade)
+def revert_from_byte():
+    
+    operations_96='5c39d473b1ec045559e3011c94e06c103f69a0ffd3b8a43aa47354aaa1302f4e01549c01b1465def34fbd9743f3fd07a161ea558e187888d8b80ffd1e00ed4a9cfcdc3ed47f7a37b535207027cbb18ba8a9b63c72ad8179317baf4dd211041ed01971e5ce92840df0a6e16f891a1dd026ca8eb431db693dc7b840bae8a7b0c037b5cbdc29e9b74a14d2a55b1e91b06b9'
+
+    #Conversão    
+    r=bytes.fromhex(operations_96)
+
+    s=b'\\9\xd4s\xb1\xec\x04UY\xe3\x01\x1c\x94\xe0l\x10?i\xa0\xff\xd3\xb8\xa4:\xa4sT\xaa\xa10/N\x01T\x9c\x01\xb1F]\xef4\xfb\xd9t??\xd0z\x16\x1e\xa5X\xe1\x87\x88\x8d\x8b\x80\xff\xd1\xe0\x0e\xd4\xa9\xcf\xcd\xc3\xedG\xf7\xa3{SR\x07\x02|\xbb\x18\xba\x8a\x9bc\xc7*\xd8\x17\x93\x17\xba\xf4\xdd!\x10A\xed\x01\x97\x1e\\\xe9(@\xdf\nn\x16\xf8\x91\xa1\xdd\x02l\xa8\xebC\x1d\xb6\x93\xdc{\x84\x0b\xae\x8a{\x0c\x03{\\\xbd\xc2\x9e\x9bt\xa1M*U\xb1\xe9\x1b\x06\xb9'
+    
+    #t=codecs.decode(s, 'utf-8')#erro de utf-8
+    #print(operations_96)
+    print()
+    print(r)
+    print()
+    print(s)
+    print()
+    #print(t)#erro de utf-8
+#---------------------------------------------------------------------------
 
 #-->Caso não queira basta usar a função abaixo:
 
@@ -446,4 +544,11 @@ os.system('cls' if os.name == 'nt' else 'clear')
 
 #generate_96_op_12_bits() #String de bits
 
-write_read_txt()#Criação e leitura do arquivo
+#write_read_txt()#Criação e leitura do arquivo
+
+#hex_to_byte()#Criação e leitura da string de bytes
+
+#write_read_txt_2()#Criação e leitura do arquivo de bytes
+
+#préludio para o código em C++ dentro do python
+#revert_from_byte()#teste de viabilidade de reversão de bytes para string hexadecimal
