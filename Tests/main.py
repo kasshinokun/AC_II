@@ -5,13 +5,15 @@
 
 #Prototipo em Python 
 #Criado em 19-09-2024
-# Revisão 1_25_09_2024
+# Revisão 1_26_09_2024
 
 import serial
 
 import serial.tools.list_ports
 
-import os, io, subprocess, time, codecs, binascii 
+import os, io, re, subprocess, time, codecs, binascii 
+
+from fnmatch import fnmatch
 
 from binascii import unhexlify
 
@@ -181,101 +183,13 @@ def get_doc_folder():#Localiza a pasta documentos do windows ou linux
     
     return path_doc
 
-# Baseado no path dado e no parametro 
-# listará os arquivos dentro do local 
-# e das subpastas
-def list_files(path_f,pattern_f):
-    
-    from fnmatch import fnmatch
-
-    root = path_f
-    
-    pattern = pattern_f
-
-    find_files=[]
-
-    #Leitura e adição em um vetor de caminhos
-    for path, subdirs, files in os.walk(root):
-        
-        for name in files:
-            
-            if fnmatch(name, pattern):
-                
-                file_p=os.path.join(path, name)
-                
-                find_files.append(file_p)
-    
-    #Exibe cada caminho encontrado
-    for file_x in find_files:
-        
-        print(file_x)          
-    
-    #Leitura do caminho escolhido
-    with open(find_files[0], "r") as fp:
-        
-        #Leitura da primeira linha
-        lines = fp.readline()
-        
-        #Checagem
-        if(('inicio:' in lines)|('Inicio:' in lines)):
-
-            lines = fp.readlines()#Leitura das demais linhas
-            
-            for i in lines:
-                
-                if ((i =="fim." )| (i =="Fim.")): #se chegar o fim
-                    
-                    break#interrompe
-                else:
-                    
-                    print(i)#Exibe linha
-        else:
-            
-            print("wrong command text")#feedback
-
-def set_path_read():#Escolha do usuário para configurar o path do arquivo
-    
-    print("Set local to read:")
-    print("1)--->Path")
-    print("2)--->Users/Documents")
-    result=input("Choose a option, please: ")
-    if result==1:
-        path_f=input("Set a path, please: ")
-        list_files(path_f,"*.pdf")
-    elif result==2:
-        list_files(get_doc_folder(),"*.pdf")
-    else:
-        print ("not recognized")
-        
-
-#Analise do mnemonico enviado versão 2
-def set_op_code_beta(mnemonic):
-    
-    dict_op_codes={
-        'umL':'0',
-        'AonB':'1',
-        'copiaA':'2',
-        'nAxnB':'3',
-        'AeBn':'4',
-        'nA':'5',
-        'AenB':'6',
-        'nAonB': '7',
-        'AxB':'8',
-        'zeroL':'9',
-        'copiaB':'A',
-        'AeB':'B',
-        'nB':'C',
-        'nAeBn':'D',
-        'AoB':'E',
-        'nAeB':'F'}
-    if mnemonic in dict_op_codes:
-        return dict_op_codes.get(mnemonic)
-    else:
-        print ("not recognized")
-        return -1
-    
 #Analise do mnemonico enviado versão 1
 def set_op_code_alpha(mnemonic):
+    
+    pattern = re.compile(r'\s+')
+    mnemonic = re.sub(pattern, '', mnemonic)
+    
+    #print(mnemonic)
     
     if mnemonic=='umL':
         return '0'
@@ -312,6 +226,37 @@ def set_op_code_alpha(mnemonic):
     else:
         print ("not recognized")
         return -1
+    
+#Analise do mnemonico enviado versão 2
+def set_op_code_beta(mnemonic):
+    
+    pattern = re.compile(r'\s+')
+    mnemonic = re.sub(pattern, '', mnemonic)
+    
+    #print(mnemonic)
+    
+    dict_op_codes={
+        'umL': '0',
+        'AonB': '1',
+        'copiaA': '2',
+        'nAxnB': '3',
+        'AeBn': '4',
+        'nA': '5',
+        'AenB': '6',
+        'nAonB': '7',
+        'AxB': '8',
+        'zeroL': '9',
+        'copiaB': 'A',
+        'AeB': 'B',
+        'nB': 'C',
+        'nAeBn': 'D',
+        'AoB': 'E',
+        'nAeB': 'F'}
+    try:
+        return dict_op_codes.get(mnemonic)
+    except Exception as errno:
+        print ("not recognized ", errno)
+        return None
 
 def check_result(mnemonic,result): 
     
@@ -334,6 +279,144 @@ def show_mnemonic():#Teste das 2 versões
     print("O Dicionário possui a chave: %s ?"%(mnemonic))
     result2=set_op_code_beta(mnemonic)
     check_result(mnemonic,result2)
+
+def generate_hex(list_96_op):#Escrita do arquivo .hex
+    
+    path_txt=get_doc_folder()+"\\ac_2_ep_04\\text.hex"# Caminho do arquivo
+
+    if not os.path.exists(get_doc_folder()+"\\ac_2_ep_04"):#verificação da pasta
+        os.makedirs(get_doc_folder()+"\\ac_2_ep_04")
+
+    print("Escrita no caminho: ",path_txt) # Feedback
+    
+    with open(path_txt,"w") as arquivo: # Escrita do arquivo
+        arquivo.write("".join(str(item) for item in list_96_op))
+        #pickle..dump(list_96_op, arquivo)
+
+def read_hex_test():# Leitura do arquivo .hex
+    
+    path_txt=get_doc_folder()+"\\ac_2_ep_04\\text.hex"# Caminho do arquivo
+
+    if not os.path.exists(get_doc_folder()+"\\ac_2_ep_04"):# Feedback
+        os.makedirs(get_doc_folder()+"\\ac_2_ep_04")
+
+    print("Leitura no caminho: ",path_txt) # Feedback
+
+    
+
+def generate_op(x,y,w): #----------Gera a operação a ser gravada
+    
+    pattern = re.compile(r'\s+')
+    x = re.sub(pattern, '', x)
+    
+    pattern = re.compile(r'\s+')
+    y = re.sub(pattern, '', y)
+
+    pattern = re.compile(r'\s+')
+    w = re.sub(pattern, '', w)
+
+    return (x+y+w)
+
+# Baseado no path dado e no parametro 
+# listará os arquivos dentro do local 
+# e das subpastas
+def list_files(path_f,pattern_f):
+    
+    #Configura variavel de caminho
+    root = path_f
+    
+    #Configura variavel de padrão(extensão do arquivo a ser lido)
+    pattern = pattern_f
+
+    find_files=[] #Vetor de Strings
+    list_96_op=[] # vetor de strings
+
+    #Leitura e adição em um vetor de caminhos
+    for path, subdirs, files in os.walk(root):
+        
+        for name in files:
+            
+            if fnmatch(name, pattern):
+                
+                file_p=os.path.join(path, name)
+                
+                find_files.append(file_p)
+    
+    #Exibe cada caminho encontrado
+    for file_x in find_files:
+        
+        print(file_x)          
+    
+    #Leitura do caminho escolhido
+    with open(find_files[0], "r") as fp:
+        
+        #Leitura da primeira linha
+        lines = fp.readline()
+        
+        #Checagem
+        if(('inicio:' in lines)|('Inicio:' in lines)):
+
+            lines = fp.readlines()#Leitura das demais linhas
+            #Inicializa as variáveis
+            x=''
+            y=''
+            w=''
+            for i in lines:
+                
+                if ((i =="fim." )|(i =="Fim.")): #se chegar o fim
+                    
+                    break#interrompe
+                else:
+                    
+                    print('Linha: ',i)#Exibe linha
+                    
+                    if('X=' in i):
+                        x=re.sub("[x:,.X=;]","",i) # adiciona o valor de x
+                        #Feedback
+                        #print('X equivale a ',x)
+                        #print('Y equivale a ',y)
+                        
+                    elif('Y=' in i):
+                        y=re.sub("[y:,.Y=;]","",i) # adiciona o valor de x
+                        #Feedback
+                        #print('X equivale a ',x)
+                        #print('Y equivale a ',y)
+                        
+                    elif('W=' in i):
+                        w=re.sub("[w:,.W=;]","",i) # adiciona o valor de w
+                        w=set_op_code_beta(w) #pega o opcode
+                        #Feedback
+                        #print('X equivale a ',x)
+                        #print('Y equivale a ',y)
+                        #print('W equivale a ',w)
+                        operate=generate_op(x,y,w)
+                        #print('Operacao: ',operate)
+                        
+                        list_96_op.append(operate) # gera a string e adiciona ao vetor de strings 
+            #Feedback
+            for opcode in list_96_op:
+                print("operacao: ",opcode)  
+            generate_hex(list_96_op)#Cria o arquivo .hex
+                     
+        else:
+            
+            print("wrong command text")#feedback
+
+def set_path_read():#Escolha do usuário para configurar o path do arquivo
+    
+    print("Set local to read:")
+    print("1)--->Path")
+    print("2)--->Users/Documents")
+    result=input("Choose a option, please: ")
+    if result==1:
+        path_f=input("Set a path, please: ")
+        list_files(path_f,"*.pdf")
+    elif result==2:
+        list_files(get_doc_folder(),"*.pdf")
+    else:
+        print ("not recognized")
+        
+
 
 #----------------------------------------------------------------Teste pratico da conexão com o Arduino/Esp32
 def test_serial():
@@ -474,6 +557,16 @@ def write_read_txt_2():#arquivo de bytes
         print("Erro was found")
         print(errno)
 
+def write_read_txt_3():#Préludio do arquivo
+    try:
+        print("Criando o arquivo")
+        list_files(get_doc_folder(),"*.ula") #Leitura do arquivo
+        print("Lendo o arquivo")
+        read_txt(get_doc_folder()+"\\ac_2_ep_04\\text.hex")
+    except Exception as errno:
+        print("Erro was found")
+        print(errno)
+
 #reversão de byte para string hexadecimal precisará ser feita no c++(teste dos bytes e analise de viabilidade)
 def revert_from_byte():
     
@@ -552,3 +645,17 @@ os.system('cls' if os.name == 'nt' else 'clear')
 
 #préludio para o código em C++ dentro do python
 #revert_from_byte()#teste de viabilidade de reversão de bytes para string hexadecimal
+
+#---------------------------------------Orientações-------------------------------------------------
+#Lista de funções para o exercicio
+
+#-->get_doc_folder():#Localiza a pasta documentos do windows ou linux
+#-->set_op_code_beta(mnemonic):#analisa e retorna o opcode
+#-->read_txt(path_txt):#Leitura do arquivo .hex
+#-->generate_op(x,y,w): #----------Gera a operação a ser gravada
+#-->generate_hex(list_96_op):#Escrita do arquivo .hex
+#-->list_files(get_doc_folder(),"*.ula") #Leitura do arquivo .txt(.ula) e escrita do arquivo .hex
+
+write_read_txt_3() #Usem esta função e suas subfunções acima listadas por favor
+
+#as demais são apenas testes e feedback
