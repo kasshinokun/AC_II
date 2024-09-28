@@ -39,14 +39,14 @@ class op_arduino{
 };
 class tp_03{
   private:
-  vet_op[]=new int[100];
+  vet_op[]=new int[100];//está como int mas utilizem a string recebida fica mais prático a armazenagem
   vet_op[0]=4;//pc
   vet_op[1]=-1;//x
   vet_op[2]=-1;//y
   vet_op[3]=-1;//w
 
   boolean get_x(int i){
-    if this->vet_op[i]==null{
+    if this->vet_op[i]!=null{
         return false;
     }
     return true;
