@@ -106,11 +106,11 @@ int main() {
 //---------------------------Formular regex para esta parte
     cout << "Caracteres Invalidos teste 2:"<< endl;//ok
     //deve printar 0 -->OK
-    cout << valide_string("CA!")<< endl;//erro
-    cout << valide_string("C!A")<< endl;//erro
-    cout << valide_string("!CA")<< endl;//erro
-    cout << valide_string("CA ")<< endl;//erro
-    cout << valide_string("C A")<< endl;//erro
-    cout << valide_string(" CA")<< endl;//erro
+    cout << valide_string("CA!")<< endl;//ok
+    cout << valide_string("C!A")<< endl;//ok
+    cout << valide_string("!CA")<< endl;//ok
+    cout << valide_string("CA ")<< endl;//ok
+    cout << valide_string("C A")<< endl;//ok
+    cout << valide_string(" CA")<< endl;//ok
     return 0;
 }
