@@ -1,6 +1,10 @@
 //Algoritmo desenvolvido por Welbert em 02-10-2024
 //Revisão 3_03_10_2024
 
+//----------------------------------OBS. IMPORTANTE:-------------------------------------------------
+//-------------------------Falta desenvolver as operações lógicas
+//---------------------------------------------------------------------------------------------------
+
 #include <iostream>
 #include <cstring>  // Para usar strcpy
 #include <math.h>
@@ -103,7 +107,7 @@ int main() {
     cout << valide_string("GAB")<< endl;//ok
     cout << valide_string("AgB")<< endl;//ok
     cout << valide_string("ABh")<< endl;//ok
-//---------------------------Formular regex para esta parte
+//---------------------------Funcionado Corretamente(carece análise)
     cout << "Caracteres Invalidos teste 2:"<< endl;//ok
     //deve printar 0 -->OK
     cout << valide_string("CA!")<< endl;//ok
