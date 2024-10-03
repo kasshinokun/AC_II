@@ -10,6 +10,9 @@
 using namespace std;
 bool valide_string(string const &s){
     return regex_match(s, regex("[^g-zG-Z]*$"));
+
+    //para testar 
+    //return regex_match(s, regex("[^[[:blank:][:punct:]]]*$"));
 }
 //Converte o caracter para decimal baseando-se em heexadecimal
 unsigned long hex2dec(string hex)
