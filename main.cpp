@@ -1,5 +1,5 @@
 //Algoritmo desenvolvido por Welbert em 02-10-2024
-//Revisão 1_03_10_2024
+//Revisão 3_03_10_2024
 
 #include <iostream>
 #include <cstring>  // Para usar strcpy
@@ -9,10 +9,7 @@
 
 using namespace std;
 bool valide_string(string const &s){
-    return regex_match(s, regex("[^g-zG-Z]*$"));
-
-    //para testar 
-    //return regex_match(s, regex("[^[[:blank:][:punct:]]]*$"));
+    return regex_match(s, regex("[a-fA-F0-9]*$"));
 }
 //Converte o caracter para decimal baseando-se em heexadecimal
 unsigned long hex2dec(string hex)
@@ -78,10 +75,14 @@ int main() {
     execute_operations(test_string);//converte e valida para vetor de char
 
     //string para inteiro correto em hexadecimal depois para inteiro decimal
+    cout << "\nCaracter/String para Hexadecimal\ne depois decimal teste:"<< endl;//ok
     cout << hex2dec("a") << endl;
 
     //Teste Regex
 //----------------------------Funcionado Corretamente
+    cout << "\nCaracteres validos\n0-9, a-f e A-F"<< endl;//ok
+    cout << "\nCaracteres validos teste:"<< endl;//ok
+    //deve printar 1 -->OK
     cout << valide_string("134")<< endl;//ok
     cout << valide_string("a34")<< endl;//ok
     cout << valide_string("A34")<< endl;//ok
@@ -97,10 +98,14 @@ int main() {
     cout << valide_string("cAb")<< endl;//ok
     cout << valide_string("Cab")<< endl;//ok
     cout << valide_string("CAB")<< endl;//ok
+    cout << "Caracteres Invalidos teste 1:"<< endl;//ok
+    //deve printar 0 -->OK
     cout << valide_string("GAB")<< endl;//ok
     cout << valide_string("AgB")<< endl;//ok
     cout << valide_string("ABh")<< endl;//ok
 //---------------------------Formular regex para esta parte
+    cout << "Caracteres Invalidos teste 2:"<< endl;//ok
+    //deve printar 0 -->OK
     cout << valide_string("CA!")<< endl;//erro
     cout << valide_string("C!A")<< endl;//erro
     cout << valide_string("!CA")<< endl;//erro
