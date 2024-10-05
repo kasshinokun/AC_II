@@ -1,15 +1,39 @@
 //Algoritmo desenvolvido por Welbert em 02-10-2024
-//Revisão 3_03_10_2024
+//Revisão 1_05_10_2024
 
 //----------------------------------OBS. IMPORTANTE:-------------------------------------------------
-//-------------------------Falta desenvolver as operações lógicas
+//-------------------------Falta desenvolver armazenamento em vetor
 //---------------------------------------------------------------------------------------------------
 
+
+//Hashmap de funções ----->Gabriel analisando
+//Fonte: https://www.geeksforgeeks.org/cpp-map-of-functions/
+
+//Padrao
 #include <iostream>
 #include <cstring>  // Para usar strcpy
 #include <math.h>
 #include <algorithm>
 #include <regex>//validar caracteres
+
+//Hashmap de funcoes ----->Gabriel analisando
+#include <bits/stdc++.h>
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <memory>
+#include <any>
+#include <utility>
+#include <vector>
+#include <typeinfo>
+#include <typeindex>
+#include <cassert>
+//#include <boost/function.hpp>//precisar adicionar ao CodeBlocks
+//#include <boost/lambda/bind.hpp>//precisar adicionar ao CodeBlocks
+//-----------------------------------------------------------------------------
+
+using namespace std;
+//namespace l = boost::lambda;
 
 using namespace std;
 bool valide_string(string const &s){
@@ -64,15 +88,53 @@ void execute_operations(string str) {
 }
 
 // Funções de portas lógicas (vazias por enquanto)
-void porta_not(char a) {}
-void porta_and(char a, char b) {}
-void porta_or(char a, char b) {}
-void porta_xor(char a, char b) {}
-void porta_nand(char a, char b) {}
-void porta_nor(char a, char b) {}
-void porta_xnor(char a, char b) {}
+int porta_not(char a) {
+    if (valide_string(string()+a)==1){
+        return ~hex2dec(string()+a);
+    }
+}
+int porta_not_2(char a) {
+    if (valide_string(string()+a)==1){
+        int x=hex2dec(string()+a);
+        return (x>0|x!=0?~x+1:~x+2);
+    }
+}
+int porta_and(char a, char b) {
+    if (valide_string(string()+a)==1 && valide_string(string()+b)==1){
+        return (hex2dec(string()+a) & hex2dec(string()+b));
+    }
+}
+int porta_or(char a, char b) {
+    if (valide_string(string()+a)==1 && valide_string(string()+b)==1){
+        return (hex2dec(string()+a) | hex2dec(string()+b));
+    }
+}
+int porta_xor(char a, char b) {
+    if (valide_string(string()+a)==1 && valide_string(string()+b)==1){
+        return (hex2dec(string()+a) ^ hex2dec(string()+b));
+    }
+}
 
-int main() {
+int porta_nand(char a, char b) {
+    if (valide_string(string()+a)==1 && valide_string(string()+b)==1){
+        return ~(hex2dec(string()+a) & hex2dec(string()+b));
+    }
+}
+int porta_nor(char a, char b) {
+    if (valide_string(string()+a)==1 && valide_string(string()+b)==1){
+        return ~(hex2dec(string()+a) | hex2dec(string()+b));
+    }
+}
+int porta_xnor(char a, char b) {
+    if (valide_string(string()+a)==1 && valide_string(string()+b)==1){
+        return ~(hex2dec(string()+a) ^ hex2dec(string()+b));
+    }
+}
+
+//Esta como int como preparativo para o teste 
+//hashmap de funcoes similar 
+//ao vetor com lambda em python        
+int teste_de_validacao() {
 
     //teste Welbert
     string test_string = "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc";
@@ -107,7 +169,7 @@ int main() {
     cout << valide_string("GAB")<< endl;//ok
     cout << valide_string("AgB")<< endl;//ok
     cout << valide_string("ABh")<< endl;//ok
-//---------------------------Funcionado Corretamente(carece análise)
+//---------------------------Funcionado Corretamente(carece analise)
     cout << "Caracteres Invalidos teste 2:"<< endl;//ok
     //deve printar 0 -->OK
     cout << valide_string("CA!")<< endl;//ok
@@ -116,5 +178,21 @@ int main() {
     cout << valide_string("CA ")<< endl;//ok
     cout << valide_string("C A")<< endl;//ok
     cout << valide_string(" CA")<< endl;//ok
+//---------------------------Funcionado Corretamente(carece analise)
+    //Apenas templates
+    cout << "Portas Logicas teste:"<< endl;//ok
+    cout << porta_not('a')<< endl;//ok
+    cout << porta_and('a','b')<< endl;//ok
+    cout << porta_nand('a','b')<< endl;//ok
+    cout << porta_or('a','f')<< endl;//ok
+    cout << porta_nor('a','f')<< endl;//ok
+    cout << porta_xor('a','f')<< endl;//ok
+    cout << porta_xnor('a','f')<< endl;//ok
+    return 0;
+}
+int main() {
+
+    teste_de_validacao()//Validacao de strings
+        
     return 0;
 }
