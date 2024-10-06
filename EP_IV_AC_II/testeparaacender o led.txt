@@ -1,0 +1,60 @@
+// Defina os pinos para os LEDs
+int ledMSB = 13; // Bit mais significativo
+int led2 = 12;
+int led3 = 11;
+int ledLSB = 10; // Bit menos significativo
+
+void setup() {
+  // Inicializa a comunicação serial
+  Serial.begin(9600);
+
+  // Configura os pinos dos LEDs como saídas
+  pinMode(ledMSB, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(ledLSB, OUTPUT);
+
+  // Mensagem inicial
+  Serial.println("Digite um valor hexadecimal (0-9, A-F) para exibir nos LEDs.");
+}
+
+void loop() {
+  // Verifica se há dados disponíveis na comunicação serial
+  if (Serial.available() > 0) {
+    // Lê o caractere recebido
+    char receivedChar = Serial.read();
+    
+    // Converte o caractere para seu valor hexadecimal correspondente
+    byte hexValue = 0;
+    
+    // Se for um número (0-9)
+    if (receivedChar >= '0' && receivedChar <= '9') {
+      hexValue = receivedChar - '0'; // Converte o caractere numérico para o valor correspondente
+    }
+    // Se for uma letra (A-F ou a-f)
+    else if ((receivedChar >= 'A' && receivedChar <= 'F') || (receivedChar >= 'a' && receivedChar <= 'f')) {
+      hexValue = (receivedChar & 0xDF) - 'A' + 10; // Converte o caractere de A-F (ou a-f) para o valor hexadecimal correspondente
+    } else {
+      Serial.println("Caractere inválido. Digite um valor hexadecimal (0-9, A-F).");
+      return;
+    }
+    
+    // Exibe o valor hexadecimal correspondente nos LEDs (apenas os 4 bits mais baixos)
+    displayHexOnLeds(hexValue);
+    
+    // Mostra o valor hexadecimal no monitor serial
+    Serial.print("Caractere recebido: ");
+    Serial.print(receivedChar);
+    Serial.print(" (0x");
+    Serial.print(hexValue, HEX);
+    Serial.println(")");
+  }
+}
+
+void displayHexOnLeds(byte value) {
+  // Liga ou desliga os LEDs de acordo com o valor binário dos 4 bits mais baixos do valor hexadecimal
+  digitalWrite(ledMSB, value & 0x08 ? HIGH : LOW); // Bit 3 (MSB)
+  digitalWrite(led2,   value & 0x04 ? HIGH : LOW); // Bit 2
+  digitalWrite(led3,   value & 0x02 ? HIGH : LOW); // Bit 1
+  digitalWrite(ledLSB, value & 0x01 ? HIGH : LOW); // Bit 0 (LSB)
+}
