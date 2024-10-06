@@ -17,6 +17,24 @@ Adaptada ao código inicial feito por Gabriel
 
 using namespace std;
 
+
+//Variáveis Pseudo Hashmap--------------- 
+const int SIZE = 16;
+String keys[SIZE];
+int values[SIZE];
+
+
+//Adicionando valores
+keys={"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
+
+values={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
+
+//---------------------------------------
+
+
+
+
+
 //-------------------------Validação do Char Recebido 
 bool validate_char(char a){
     return isHexadecimalDigit(a);
@@ -76,6 +94,53 @@ int leitura_string_teste() {
     cout << "String formatada: " << formattedString << endl;
 
     return 0;
+}
+
+//------------------------Pseudo Hashmap 
+/*
+https://www.arduino.cc/reference/pt/
+
+No Tinkercad, bibliotecas mais avançadas, como uma biblioteca de hash map (tabelas de hash ou mapas associativos), não estão disponíveis diretamente, pois o simulador tem uma limitação em relação às bibliotecas externas.
+
+A ideia de um hash map não é nativamente suportada em Arduino devido à sua memória limitada e ao foco em sistemas embarcados. No entanto, existem algumas bibliotecas que oferecem funcionalidades de mapas associativos para Arduino, mas você teria que usá-las na Arduino IDE, e não diretamente no Tinkercad.
+
+Alternativa para simular Hash Map no Tinkercad:
+Se você realmente precisa de uma estrutura similar a um hash map no Tinkercad, você pode simular isso usando arrays ou listas associativas simples em C++. Aqui está um exemplo básico de como simular um hash map usando arrays no Arduino:
+
+Exemplo simples de um "pseudo hash map":*/
+
+// Função para adicionar um par chave-valor
+void add(String key, int value) {
+  for (int i = 0; i < SIZE; i++) {
+    if (keys[i] == "") { // Se o slot estiver vazio
+      keys[i] = key;
+      values[i] = value;
+      return;
+    }
+  }
+}
+
+// Função para procurar o valor associado a uma chave
+int get(String key) {
+  for (int i = 0; i < SIZE; i++) {
+    if (keys[i] == key) {
+      return values[i];
+    }
+  }
+  return -1; // Se não encontrar
+}
+
+void teste_insert_hash() {
+
+  // Adicionando pares chave-valor
+  add("A", 100);
+  add("B", 200);
+  add("C", 300);
+
+  // Buscando valor pela chave
+  Serial.println(get("A")); // Deve retornar 100
+  Serial.println(get("B")); // Deve retornar 200
+  Serial.println(get("D")); // Não encontrado, retorna -1
 }
 
 
@@ -145,7 +210,7 @@ int porta_xnor(char a, char b) {
 //-------------------------Configuração da simulação 
 void setup(){
     //Iniciar o Serial
-
+    Serial.begin(9600);
 
     //Iniciar LED's
 
