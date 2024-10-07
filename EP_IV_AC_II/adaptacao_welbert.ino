@@ -26,11 +26,20 @@ byte S = 0;       // Instrução (4 bits)
 byte W = 0;       // Resultado (4 bits)
 
 
+
+//prototypes(assinaturas)
 bool check_string(String str);
 char set_operacoes(char &operate);
 void executa_exercicio(String str);
-void decToHexa (int decimalnum);
+void exibe_no_led(char receivedChar);
 byte executaInstrucoes(byte X, byte Y, byte S);
+byte hexToByte(char hexChar);
+void displayHexOnLeds(byte value);
+void send_to_execute(String input);
+
+
+
+
 
 void setup() {
   // Inicializa a comunicação serial
