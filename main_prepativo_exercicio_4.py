@@ -1,3 +1,5 @@
+#Para executar: python run main_prepativo_exercicio_4.py
+
 #Codigo template para o Exercício Prático 4 de Arquitetura de Computadores II
 #previsao de entrega 7 de Outubro de 2024
 
