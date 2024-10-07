@@ -25,7 +25,7 @@ char* convert_char_array(String& str) {
         return nullptr;  // Retorna nullptr se a condicao nao for atendida
     }
 }
-void exibe_no_led(char& char receivedChar){
+void exibe_no_led(char &receivedChar){
   
   // Converte o caractere para seu valor hexadecimal correspondente
     byte hexValue = 0;
