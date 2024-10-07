@@ -213,21 +213,22 @@ def list_files(path_f,pattern_f):
                     break#interrompe
                 else:
                     
-                    print('Linha: ',i)#Exibe linha
+                    #print('Linha: ',i)#Exibe linha(Feedback)
                     
                     if('X=' in i):
                         x=re.sub("[x:,.X=;]","",i) # adiciona o valor de x
                         #Feedback
                         #print('X equivale a ',x)
                         #print('Y equivale a ',y)
-                        
+                        #print('Linha: ',i)#Exibe linha(Feedback)
                     elif('Y=' in i):
                         y=re.sub("[y:,.Y=;]","",i) # adiciona o valor de x
                         #Feedback
                         #print('X equivale a ',x)
                         #print('Y equivale a ',y)
-                        
+                        #print('Linha: ',i)#Exibe linha(Feedback)
                     elif('W=' in i):
+                        print('Linha: ',i)#Exibe linha
                         w=re.sub("[w:,.W=;]","",i) # adiciona o valor de w
                         w=set_op_code_beta(w) #pega o opcode
                         #Feedback
