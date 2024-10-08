@@ -1,12 +1,12 @@
-
-
-
-
-
+//fusão dos códigos para Welbert e os demais que puderem 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+const int NUM_STRINGS = 98;
+const int STR_SIZE = 3;
+char vetor[NUM_STRINGS][STR_SIZE + 1];  // Vetor de 96 strings, cada uma com 3 caracteres (mais 1 para o terminador '\0')
 
 
 // Defina os pinos para os LEDs
@@ -15,19 +15,190 @@ int led2 = 12;
 int led3 = 11;
 int ledLSB = 10; // Bit menos significativo
 
-char* convert_char_array(String& str) {
-    if (check_string(str) == 1) {
-        // Aloca o array na heap para evitar problemas de escopo
-        char* arr= new char[str.length() + 1];
-        strcpy(arr, str.c_str());
-        return arr;  // Retorna o ponteiro para o array
+// Variáveis
+byte X = 0;       // Entrada X (4 bits)
+byte Y = 0;       // Entrada Y (4 bits)
+byte S = 0;       // Instrução (4 bits)
+byte W = 0;       // Resultado (4 bits)
+
+
+
+//prototypes(assinaturas)
+bool check_string(String str);
+char set_operacoes(char &operate);
+void executa_exercicio(String str);
+void exibe_no_led(char receivedChar);
+byte executaInstrucoes(byte X, byte Y, byte S);
+byte hexToByte(char hexChar);
+void displayOnLeds(byte value);
+void send_to_execute(String input);
+
+
+
+
+
+void setup() {
+  // Inicializa a comunicação serial
+  Serial.begin(9600);
+  
+  
+  // Configura os pinos dos LEDs como saídas
+  pinMode(ledMSB, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(ledLSB, OUTPUT);
+
+  //Espera das portas
+  Serial.setTimeout(10);
+  // Mensagem inicial
+  Serial.println("Por favor insira a String para que possa ler por gentileza:");
+  
+}
+
+void loop() {
+  
+  
+  // Verifica se há dados disponíveis na comunicação serial
+  if (Serial.available() > 0) {
+    // Lê a String recebida
+    String receivedString = Serial.readString();
+    receivedString.trim();
+    Serial.println("Muito obrigado, eu li:");
+    Serial.println(receivedString);
+    
+    //Prepara a String;
+    String send_str="xxxxxx"+receivedString;
+    
+    //Envia ao procedimento
+    executa_exercicio(send_str);
+  }    
+}
+bool check_string(String str) {
+    if (str.length() % STR_SIZE == 0 && str.length() % NUM_STRINGS == 0) {
+        return true;
     } else {
-        return nullptr;  // Retorna nullptr se a condicao nao for atendida
+        return false;
     }
 }
-void exibe_no_led(char &receivedChar){
+
+char set_operacoes(char &operate){
+  return operate;
+
+}void executa_exercicio(String str){
   
-  // Converte o caractere para seu valor hexadecimal correspondente
+    //Valida se str.length %3 ou str.length %96
+    if( check_string(str)==true){
+        // Divide a string em blocos de 3 caracteres e armazena no vetor
+        for (int i = 0; i < NUM_STRINGS; i++) {
+            str.substring(i * STR_SIZE, (i * STR_SIZE) + STR_SIZE).toCharArray(vetor[i], STR_SIZE + 1);
+        }
+
+        // Exibe as 96 strings no monitor serial e processa cada uma delas
+        for (int i = 2; i < NUM_STRINGS; i++) {
+            
+            //PC precisa contar
+          
+          
+            Serial.print("String [");
+            Serial.print("PC");
+            Serial.print("]: [");
+            Serial.print(vetor[0]);
+			Serial.println("]");
+            
+            //executa a operação
+            
+            
+            strcpy(vetor[1], vetor[i]);
+          
+            Serial.print("String [");
+            Serial.print("XYS");
+            Serial.print("]: [");
+            Serial.print(vetor[1]);
+            Serial.println("]");
+          
+            Serial.print("String [");
+            Serial.print(i);
+            Serial.print("]: [");
+            Serial.print(vetor[i]);
+            Serial.print("]|");
+            
+            // Aqui processamos o caractere de cada solução 
+            //string no LED
+            // Exemplo de processamento de um caractere da string
+            exibe_no_led(vetor[i][2]);  
+            
+            //Restante do vetor
+            for (int j=i+1;j<NUM_STRINGS;j++){
+                Serial.print(vetor[j]);
+            	Serial.print("|");
+            }
+            Serial.println();
+
+            
+        }
+    }
+}
+void teste_exercicio(String str){
+  
+  
+  
+  
+  
+  
+  	//Valida se str.length %3 ou str.length %96
+    if( check_string(str)==true){
+    	
+        String start_String="xxx"+str; 
+
+            
+      	int size_v=start_String.length();
+      
+        //Tamanho do vetor(com 1 char extra  para o final null)
+		int str_len = size_v + 1; 
+        
+        //Prepara o vetor de char(o buffer) 
+		char vet[str_len];
+      	
+        //Copia para o vetor 
+		start_String.toCharArray(vet, str_len);
+      
+        Serial.println("String preparada:");  	
+        Serial.println(vet);
+        
+      	Serial.println("Vetor preparado:");  
+        Serial.println(vet);
+      
+        
+        
+     	for (int i=5,k=4;i<str_len;i+=4,k++){
+      		
+            Serial.println("Vetor preparado:");  
+        	
+          	vet[2]=vet[i];
+            vet[3]=vet[i+1];
+            vet[4]=vet[i+2];
+          
+            //Exibição da base
+            Serial.print(vet[0]);
+            Serial.print(vet[1]);
+            Serial.print(vet[2]);
+            
+          
+            //Restante do vetor
+            for (int j=i;j<str_len;j++){
+                Serial.print(vet[j]);
+            //PC X Y W 4-99
+
+            }/*
+            Serial.println();
+          	Serial.println(vet);*/
+        	delay(1000);
+        }
+        
+    }
+}
+void exibe_no_led (char receivedChar){   
+    // Converte o caractere para seu valor hexadecimal correspondente
     byte hexValue = 0;
     
     // Se for um número (0-9)
@@ -43,7 +214,7 @@ void exibe_no_led(char &receivedChar){
     }
     
     // Exibe o valor hexadecimal correspondente nos LEDs (apenas os 4 bits mais baixos)
-    displayHexOnLeds(hexValue);
+    displayOnLeds(hexValue);
     
     // Mostra o valor hexadecimal no monitor serial
     Serial.print("Caractere recebido: ");
@@ -51,128 +222,73 @@ void exibe_no_led(char &receivedChar){
     Serial.print(" (0x");
     Serial.print(hexValue, HEX);
     Serial.println(")");
-    
+  
+}
+
+
+// Função para converter caractere hexadecimal em byte
+byte hexToByte(char hexChar) {
+  if (hexChar >= '0' && hexChar <= '9') return hexChar - '0';
+  else if (hexChar >= 'A' && hexChar <= 'F') return hexChar - 'A' + 10;
+  else if (hexChar >= 'a' && hexChar <= 'f') return hexChar - 'a' + 10;
+  return 0;
+}
+
+// Função que executa as instruções da ULA
+byte executaInstrucoes(byte X, byte Y, byte S) {
+  switch (S) {
+    case 0x0: return 1;            // Lógico umL
+    case 0x1: return X | (~Y);     // A+B'
+    case 0x2: return X;            // A copiaA
+    case 0x3: return ~X ^ ~Y;      // A'⊕B'
+    case 0x4: return ~(X & Y);     // (A.B)'
+    case 0x5: return ~X;           // A'
+    case 0x6: return X & (~Y);     // A.B'
+    case 0x7: return ~X | ~Y;      // A' + B'
+    case 0x8: return X ^ Y;        // A⊕B
+    case 0x9: return 0;            // Lógico zeroL
+    case 0xA: return Y;            // B copiaB
+    case 0xB: return X & Y;        // A.B
+    case 0xC: return ~Y;           // B'
+    case 0xD: return ~(~X & Y);    // (A'.B)'
+    case 0xE: return X | Y;        // A+B
+    case 0xF: return ~X & Y;       // A'.B
+    default: return 0;
   }
 }
 
-void displayHexOnLeds(byte value) {
+// Função para exibir o valor W nos LEDs
+void displayOnLeds(byte value) {
   // Liga ou desliga os LEDs de acordo com o valor binário dos 4 bits mais baixos do valor hexadecimal
-  digitalWrite(ledMSB, value & 0x08 ? HIGH : LOW); // Bit 3 (MSB)
-  digitalWrite(led2,   value & 0x04 ? HIGH : LOW); // Bit 2
-  digitalWrite(led3,   value & 0x02 ? HIGH : LOW); // Bit 1
-  digitalWrite(ledLSB, value & 0x01 ? HIGH : LOW); // Bit 0 (LSB)
+  
+  digitalWrite(ledMSB, value & 0x08 ? HIGH : LOW);  // F3 Bit 3 (MSB)
+  digitalWrite(led2,   value & 0x04 ? HIGH : LOW);  // F2 Bit 2
+  digitalWrite(led3,   value & 0x02 ? HIGH : LOW);  // F1 Bit 1
+  digitalWrite(ledLSB, value & 0x01 ? HIGH : LOW);  // F0 Bit 0 (LSB)
 }
 
-bool check_string(String& str) {
-    if (str.length() % 3 == 0 && str.length() % 96 == 0) {
-        return true;
+
+
+void send_to_execute(String input){
+
+   input.trim();
+
+   if (input.length() == 3) {
+      X = hexToByte(input.charAt(0));
+      Y = hexToByte(input.charAt(1));
+      S = hexToByte(input.charAt(2));
+      
+      // Executa a operação da ULA
+      W = executaInstrucoes(X, Y, S);
+      
+      // Exibe o resultado nos LEDs
+      displayOnLeds(W);
+      
+      // Exibe no monitor serial
+      Serial.print("Resultado W: 0x");
+      Serial.println(W, HEX);
     } else {
-        return false;
-    }
-}
-
-void executa_exercicio(String& str){
-    
-    //Valida se str.length %3 ou str.length %96
-    if check_string(str)==true{
-
-      //Converte char[]
-
-      char* base[]={'s','s','s','s'};
-      //==========={[PC] [X] [Y] [S]}
-      char* vet[]=strcat(base,convert_char_array(str));
-      
-      int k=4;//
-      
-      for (int i=4; i<100;i+=4){
-          
-          //preparação base
-          vet[0]=k;//PC
-
-          vet[1]=vet[i+1];//X
-
-          vet[2]=vet[i+2];//Y
-          
-          vet[3]=set_operacoes(vet[i+3]);//Envia W para obter Solucao
-          
-          //Exibe nos leds
-          exibe_no_led(vet[3]);
-
-          int j=i;//
-          
-          //Exibição da base
-          Serial.print(vet[0]);
-          Serial.print(vet[1]);
-          Serial.print(vet[2]);
-          Serial.print(vet[3]);
-          
-          //Restante do vetor
-          for (;j<100;j++){
-              Serial.print(vet[j]);
-          //PC X Y W 4-99
-              
-          }
-          Serial.println();
-          k++;
-      }
-
-    }  
-    //else{Serial.println("String Invalida");}
-    
-}
-// Função para converter decimal para binário
-String decimalParaBinario(int n, int bits) {
-    // Array para armazenar os bits binários
-    char binario[bits + 1];
-    binario[bits] = '\0'; // Terminador de string
-
-    // Preenche o array de trás para frente com os bits
-    for (int i = bits - 1; i >= 0; i--) {
-        binario[i] = (n % 2) ? '1' : '0';
-        n /= 2;
+      Serial.println("Entrada inválida! Insira 3 caracteres.");
     }
 
-    // Exibir valor binário
-    printf("Binário: %s\n", binario);
-    return binario;
 }
-
-void start_test() {
-    // Hexadecimal de 3 caracteres
-    char hexNum[] = "1AF";
-
-    // Converter o número hexadecimal para decimal (inteiro)
-    int decimalValue = (int)strtol(hexNum, NULL, 16);
-
-    // Exibir valor hexadecimal
-    printf("Hexadecimal: %s\n", hexNum);
-
-    // Converter o valor decimal para binário (12 bits, 3 dígitos hexadecimais)
-    printf("Resultado: %s\n",decimalParaBinario(decimalValue, 12));
-
-    
-}
-
-void setup() {
-  // Inicializa a comunicação serial
-  Serial.begin(9600);
-
-  // Configura os pinos dos LEDs como saídas
-  pinMode(ledMSB, OUTPUT);
-  pinMode(led2, OUTPUT);
-  pinMode(led3, OUTPUT);
-  pinMode(ledLSB, OUTPUT);
-
-  // Mensagem inicial
-  Serial.println("Digite um valor hexadecimal (0-9, A-F) para exibir nos LEDs.");
-}
-void loop() {
-  // Verifica se há dados disponíveis na comunicação serial
-  if (Serial.available() > 0) {
-    // Lê o caractere recebido
-    String receivedString = Serial.read();
-
-    executa_exercicio(receivedString);
-  }
-}
-
