@@ -3,7 +3,7 @@
 #Codigo template para o Exercício Prático 4 de Arquitetura de Computadores II
 #previsao de entrega 7 de Outubro de 2024
 
-#Caso haja comentários, é pois esqueci de(não deu para) traduzir 
+#Caso haja comentários em inglês, é pois esqueci de(não deu para) traduzir 
 
 #Prototipo em Python 
 #Criado em 19-09-2024 Adaptado em 29-09-2024
