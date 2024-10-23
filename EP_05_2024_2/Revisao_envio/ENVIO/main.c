@@ -32,8 +32,8 @@ int main()//no registrador 100 x 10^6 instruções
     //int *i=&a;
 
     //descomente quando for i op j
-    //char i=5, j=3; //e troque os tipos a cada analise por favor
-    int i=5, j=3; //e troque os tipos a cada analise por favor
+    char i=5, j=3; //e troque os tipos a cada analise por favor
+    //int i=5, j=3; //e troque os tipos a cada analise por favor
     //float i=5, j=3; //e troque os tipos a cada analise por favor
 
     //decomente quando for i op 3
@@ -43,11 +43,11 @@ int main()//no registrador 100 x 10^6 instruções
 
     T=CLOCKS_PER_SEC;
 
-    for (k=1;k<=100;k=k+1) // apenas para realizar a medida 10 ou 100 vezes
+    for (k=1;k<=10;k=k+1) // apenas para realizar a medida 10 ou 100 vezes
     {   inicio=clock(); // Marca o tempo inicial
 
         //decomente quando for i op j
-        for (c=1;c<=100000000;c=c+1) i=j; // executa o loop 10 x 10^6 ou 100 x 10^6
+        for (c=1;c<=10000000;c=c+1) i=j; // executa o loop 10 x 10^6 ou 100 x 10^6
 
         //decomente quando for i op 3
         //for (c=1;c<=100000000;c=c+1) i=i|3; // executa o loop 10 x 10^6 ou 100 x 10^6
@@ -63,6 +63,6 @@ int main()//no registrador 100 x 10^6 instruções
         printf("\nTempo : %g ms.", Tempo);
         media=media+Tempo;
     }
-    printf("\nTempo gasto media: %g ms.", media/100);
+    printf("\nTempo gasto media: %g ms.", media/10);
     return 0;
 }
