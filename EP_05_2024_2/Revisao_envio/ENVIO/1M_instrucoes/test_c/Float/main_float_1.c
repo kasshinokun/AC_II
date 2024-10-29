@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//ARQUIVO BASE - REVISÃO Parte 2
+//ARQUIVO BASE - REVISÃƒO Parte 2
 
-int main()//na variavel 1 x 10^6 instruções
+int main()//na variavel 1 x 10^6 instruÃ§Ãµes
 {
     //Variavel de tempo
     clock_t inicio, fim, T;
@@ -23,7 +23,7 @@ int main()//na variavel 1 x 10^6 instruções
     {   inicio=clock(); // Marca o tempo inicial
 
         //decomente quando for i op j
-        for (c=1;c<=1000000;c=c+1) i=j; // executa o loop 1 x 10^6
+        for (c=1;c<=10000000;c=c+1) i=j; // executa o loop 1 x 10^6
 
         fim = clock(); //Marca o tempo final
         Tempo =( (fim - inicio)*1000/CLOCKS_PER_SEC); //Calcula tempo final - tempo inicial
