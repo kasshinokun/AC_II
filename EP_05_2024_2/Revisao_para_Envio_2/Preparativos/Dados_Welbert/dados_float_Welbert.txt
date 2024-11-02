@@ -1,0 +1,74 @@
+ 
+ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$ gcc main_float_0.c -o main_float_0 && ./main_float_0
+
+Tempo : 21 ms.
+Tempo : 20 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$ gcc main_float_2.c -o main_float_2 && ./main_float_2n_float_2 && ./main_float_2
+
+Tempo : 26 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 28 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$ gcc main_float_3.c -o main_float_3 && ./main_float_3float_3 && ./main_float_3
+
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$ gcc main_float_1.c -o main_float_1 && ./main_float_1n_float_1 && ./main_float_1
+
+Tempo : 19 ms.
+Tempo : 21 ms.
+Tempo : 20 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+Tempo : 20 ms.
+Tempo : 21 ms.
+Tempo : 21 ms.
+ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$ gcc main_float_4.c -o main_float_4 && ./main_float_4n_float_4 && ./main_float_4
+
+Tempo : 26 ms.
+Tempo : 28 ms.
+Tempo : 27 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 27 ms.
+Tempo : 28 ms.
+ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$ gcc main_float_5.c -o main_float_5 && ./main_float_5n_float_5 && ./main_float_5
+
+Tempo : 27 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 28 ms.
+Tempo : 27 ms.
+Tempo : 27 ms.
+Tempo : 28 ms.
+Tempo : 27 ms.
+Tempo : 28 ms.
+Tempo : 27 ms.
+Tempo gasto media: 27.5 ms.ubuntu@ubuntu:/media/ubuntu/dados_teste/1M_instrucoes/test_c/Float$
