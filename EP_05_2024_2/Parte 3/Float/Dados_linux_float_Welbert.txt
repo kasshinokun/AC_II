@@ -1,0 +1,17 @@
+código terminal: gcc main_float_0.c -o main_float_0 && ./main_float_0
+Tempo gasto media: 20.9 ms.
+
+código terminal: gcc main_float_2.c -o main_float_2 && ./main_float_2n_float_2 && ./main_float_2
+Tempo gasto media: 27.ms
+
+código terminal: gcc main_float_3.c -o main_float_3 && ./main_float_3float_3 && ./main_float_3
+Tempo gasto media: 27.8 ms
+
+código terminal:  gcc main_float_1.c -o main_float_1 && ./main_float_1n_float_1 && ./main_float_1
+Tempo gasto media: 20.6 ms
+
+código terminal: gcc main_float_4.c -o main_float_4 && ./main_float_4n_float_4 && ./main_float_4
+Tempo gasto media: 27.6
+
+código terminal: gcc main_float_5.c -o main_float_5 && ./main_float_5n_float_5 && ./main_float_5
+Tempo gasto media: 27.5
